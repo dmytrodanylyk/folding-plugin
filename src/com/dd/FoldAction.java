@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
 import com.intellij.psi.PsiDirectory;
 
 public class FoldAction extends AnAction {
@@ -24,15 +23,17 @@ public class FoldAction extends AnAction {
                 SettingsManager.addFoldingFolder(path);
             }
 
-            Project project = ProjectManager.getInstance().getOpenProjects()[0];
-            ProjectView.getInstance(project).refresh();
+            Project project = actionEvent.getData(CommonDataKeys.PROJECT);
+            if (project != null) {
+                ProjectView.getInstance(project).refresh();
+            }
         }
 
     }
 
     @Override
     public void update(AnActionEvent actionEvent) {
-        final Project project = actionEvent.getData(CommonDataKeys.PROJECT);
+        Project project = actionEvent.getData(CommonDataKeys.PROJECT);
         if (project != null) {
             Object navigatable = actionEvent.getData(CommonDataKeys.NAVIGATABLE);
             actionEvent.getPresentation().setEnabledAndVisible(navigatable instanceof PsiDirectory);

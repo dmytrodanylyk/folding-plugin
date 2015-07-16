@@ -1,5 +1,6 @@
 package com.dd;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.projectView.ProjectViewNode;
 import com.intellij.ide.projectView.ViewSettings;
@@ -11,22 +12,22 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyFileNode extends ProjectViewNode<MyFile> {
+public class FoldedDirectoryNode extends ProjectViewNode<FoldedFile> {
 
 
     private final String mName;
-    List<AbstractTreeNode> mCollection;
+    private List<AbstractTreeNode> mChildNodeList;
 
-    protected MyFileNode(Project project, ViewSettings viewSettings, String name) {
-        super(project, new MyFile(), viewSettings);
+    protected FoldedDirectoryNode(Project project, ViewSettings viewSettings, String name) {
+        super(project, new FoldedFile(), viewSettings);
         mName = name;
-        mCollection = new ArrayList<>();
+        mChildNodeList = new ArrayList<>();
     }
 
     @Override
-    public boolean contains(VirtualFile file) {
-        for (final AbstractTreeNode aMyChildren : mCollection) {
-            ProjectViewNode treeNode = (ProjectViewNode)aMyChildren;
+    public boolean contains(@NotNull VirtualFile file) {
+        for (final AbstractTreeNode childNode : mChildNodeList) {
+            ProjectViewNode treeNode = (ProjectViewNode) childNode;
             if (treeNode.contains(file)) {
                 return true;
             }
@@ -37,11 +38,12 @@ public class MyFileNode extends ProjectViewNode<MyFile> {
     @NotNull
     @Override
     public List<AbstractTreeNode> getChildren() {
-        return mCollection;
+        return mChildNodeList;
     }
 
     @Override
     protected void update(PresentationData presentation) {
         presentation.setPresentableText(mName);
+        presentation.setIcon(AllIcons.Nodes.Folder);
     }
 }
