@@ -71,9 +71,11 @@ public class FoldingStructureProvider implements com.intellij.ide.projectView.Tr
                 resultList.add(fileNode);
             }
 
-            FoldedDirectoryNode fileNode = new FoldedDirectoryNode(project, viewSettings, OTHER_NODE);
-            fileNode.getChildren().addAll(otherNodeList);
-            resultList.add(fileNode);
+            if(!otherNodeList.isEmpty()) {
+                FoldedDirectoryNode fileNode = new FoldedDirectoryNode(project, viewSettings, OTHER_NODE);
+                fileNode.getChildren().addAll(otherNodeList);
+                resultList.add(fileNode);
+            }
         }
         return resultList;
     }
