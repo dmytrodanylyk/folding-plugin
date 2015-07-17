@@ -44,55 +44,60 @@ public class FoldingStructureProvider implements com.intellij.ide.projectView.Tr
     }
 
     @NotNull
-    private List<AbstractTreeNode> createFoldedFiles(@NotNull Collection<AbstractTreeNode> nodeList, ViewSettings viewSettings) {
+    private List<AbstractTreeNode> createFoldedFiles(@NotNull Collection<AbstractTreeNode> fileNodes, ViewSettings viewSettings) {
         List<AbstractTreeNode> resultList = new ArrayList<>();
         Project project = Utils.getCurrentProject();
         if (project != null) {
-            List<AbstractTreeNode> otherNodeList = new ArrayList<>();
-            HashSet<String> nodeTokenList = new HashSet<>();
-            for (AbstractTreeNode node : nodeList) {
-                if (node.getValue() instanceof PsiFile) {
-                    PsiFile file = (PsiFile) node.getValue();
-                    String fileName = file.getName();
+            HashSet<String> foldedDirNameSet = new HashSet<>();
+            List<AbstractTreeNode> notFoldedFileNodes = new ArrayList<>();
+
+            for (AbstractTreeNode fileNode : fileNodes) {
+                if (fileNode.getValue() instanceof PsiFile) {
+                    PsiFile psiFile = (PsiFile) fileNode.getValue();
+                    String fileName = psiFile.getName();
                     int endIndex = fileName.indexOf(FOLDING_CHAR);
                     if (endIndex != -1) {
-                        String nodeToken = fileName.substring(0, endIndex);
-                        nodeTokenList.add(nodeToken);
+                        String foldedDirName = fileName.substring(0, endIndex);
+                        foldedDirNameSet.add(foldedDirName);
                     } else {
-                        otherNodeList.add(node);
+                        notFoldedFileNodes.add(fileNode);
                     }
                 }
             }
 
-            for (String nodeToken : nodeTokenList) {
-                List<AbstractTreeNode> treeNodes = filterByToken(nodeList, nodeToken);
-                FoldedDirectoryNode fileNode = new FoldedDirectoryNode(project, viewSettings, nodeToken);
-                fileNode.getChildren().addAll(treeNodes);
-                resultList.add(fileNode);
+            for (String foldedDirName : foldedDirNameSet) {
+                FoldedDirectoryNode foldedDirNode = new FoldedDirectoryNode(project, viewSettings, foldedDirName);
+                List<AbstractTreeNode> foldedFileNodes = filterByDirName(fileNodes, foldedDirName);
+                foldedDirNode.getChildren().addAll(foldedFileNodes);
+                resultList.add(foldedDirNode);
             }
 
-            if(!otherNodeList.isEmpty()) {
-                FoldedDirectoryNode fileNode = new FoldedDirectoryNode(project, viewSettings, OTHER_NODE);
-                fileNode.getChildren().addAll(otherNodeList);
-                resultList.add(fileNode);
+            if(!notFoldedFileNodes.isEmpty()) {
+                FoldedDirectoryNode foldedDirNode = new FoldedDirectoryNode(project, viewSettings, OTHER_NODE);
+                foldedDirNode.getChildren().addAll(notFoldedFileNodes);
+                resultList.add(foldedDirNode);
             }
         }
         return resultList;
     }
 
     @NotNull
-    private List<AbstractTreeNode> filterByToken(Collection<AbstractTreeNode> children, String token) {
-        List<AbstractTreeNode> tokenList = new ArrayList<>();
-        for (AbstractTreeNode child : children) {
-            if (child.getValue() instanceof PsiFile) {
-                PsiFile file = (PsiFile) child.getValue();
-                String fileName = file.getName();
-                if (fileName.startsWith(token)) {
-                    tokenList.add(child);
+    private List<AbstractTreeNode> filterByDirName(Collection<AbstractTreeNode> fileNodes, String token) {
+        List<AbstractTreeNode> resultList = new ArrayList<>();
+        for (AbstractTreeNode fileNode : fileNodes) {
+            if (fileNode.getValue() instanceof PsiFile) {
+                PsiFile psiFile = (PsiFile) fileNode.getValue();
+                String fileName = psiFile.getName();
+                int endIndex = fileName.indexOf(FOLDING_CHAR);
+                if (endIndex != -1) {
+                    String foldedDirName = fileName.substring(0, endIndex);
+                    if(foldedDirName.equals(token)) {
+                        resultList.add(fileNode);
+                    }
                 }
             }
         }
 
-        return tokenList;
+        return resultList;
     }
 }
