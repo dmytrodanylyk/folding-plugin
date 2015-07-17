@@ -1,17 +1,51 @@
 <idea-plugin version="2">
-  <id>com.yourcompany.unique.plugin.id</id>
-  <name>Plugin display name here</name>
+  <id>com.dmytrodanylyk.fold</id>
+  <name>File Decompose Plugin</name>
   <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <vendor email="dmytrodanylyk@gmail.com" url="http://www.dmytrodanylyk.com/">Dmytro Danylyk</vendor>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      This plugin is very helpful in Android Development.<br>
+      It can decompose your files to different folders only in project structure view.
+      <b>Note:</b> files will not be physically moved to folders.<br>
+      <br>
+      Before decompose.<br>
+      <pre>
+      res/
+        layout/
+          chat_activity.xml
+          chat_toolbar.xml
+          chat_item.xml
+          chat_share_view.xml
+          home_activity.xml
+          home_toolbar.xml
+          home_fragment_sign_in.xml
+          home_fragment_sign_up.xml
+      </pre>
+      <br>
+      After decompose.<br>
+      <pre>
+      res/
+        layout/
+          chat/
+            chat_activity.xml
+            chat_toolbar.xml
+            chat_item.xml
+            chat_share_view.xml
+          home/
+            home_activity.xml
+            home_toolbar.xml
+            home_fragment_sign_in.xml
+            home_fragment_sign_up.xml
+      </pre>
+      <br>
+      Naming rules: folder name -> file name part till underscore<br>
+      <br>
+      <b>Note</b> The Android project view defines its own structure and does not allow modifying the structure through any extensions.<br>
     ]]></description>
 
   <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
+      Initial release.
     ]]>
   </change-notes>
 
