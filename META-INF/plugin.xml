@@ -1,10 +1,10 @@
 <idea-plugin version="2">
-  <id>com.dmytrodanylyk.fold</id>
-  <name>File Decompose Plugin</name>
-  <version>1.0</version>
-  <vendor email="dmytrodanylyk@gmail.com" url="http://www.dmytrodanylyk.com/">Dmytro Danylyk</vendor>
+    <id>com.dmytrodanylyk.fold</id>
+    <name>File Decompose Plugin</name>
+    <version>1.0-beta2</version>
+    <vendor email="dmytrodanylyk@gmail.com" url="http://www.dmytrodanylyk.com/">Dmytro Danylyk</vendor>
 
-  <description><![CDATA[
+    <description><![CDATA[
       This plugin is very helpful in Android Development.<br>
       It can decompose your files to different folders only in project structure view.
       <b>Note:</b> files will not be physically moved to folders.<br>
@@ -44,41 +44,41 @@
       <b>Note</b> The Android project view defines its own structure and does not allow modifying the structure through any extensions.<br>
     ]]></description>
 
-  <change-notes><![CDATA[
+    <change-notes><![CDATA[
       Initial release.
     ]]>
-  </change-notes>
+    </change-notes>
 
-  <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-  <idea-version since-build="131"/>
+    <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+    <idea-version since-build="131"/>
 
-  <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
+    <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
 
-  <extensions defaultExtensionNs="com.intellij">
-    <treeStructureProvider implementation="com.dd.FoldingStructureProvider"/>
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <treeStructureProvider implementation="com.dd.ProjectStructureProvider"/>
+    </extensions>
 
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
 
-  <application-components>
-    <!-- Add your application components here -->
-  </application-components>
+    <application-components>
+        <!-- Add your application components here -->
+    </application-components>
 
-  <project-components>
-    <!-- Add your project components here -->
-  </project-components>
+    <project-components>
+        <!-- Add your project components here -->
+    </project-components>
 
-  <actions>
-    <!-- Add your actions here -->
-    <action id="Fold" class="com.dd.FoldAction" text="Fold Action">
-      <add-to-group group-id="ToolsMenu" anchor="first"/>
-    </action>
-  </actions>
+    <actions>
+        <!-- Add your actions here -->
+        <action id="ComposeAction" class="com.dd.ComposeAction">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
+        </action>
+    </actions>
 
 </idea-plugin>

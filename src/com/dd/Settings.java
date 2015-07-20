@@ -8,19 +8,15 @@ import java.util.List;
 
 public class Settings {
 
-    @SerializedName("FoldingFolders")
-    private List<String> mFoldingFolders;
+    @SerializedName("DecomposedFolders")
+    private List<String> mComposedFolders;
 
     @NotNull
-    public List<String> getFoldingFolders() {
-        if(mFoldingFolders == null) {
-            mFoldingFolders = new ArrayList<>();
+    public List<String> getComposedFolders() {
+        if(mComposedFolders == null) {
+            mComposedFolders = new ArrayList<>();
         }
 
-        return mFoldingFolders;
-    }
-
-    public void setFoldingFolders(List<String> foldingFolders) {
-        mFoldingFolders = foldingFolders;
+        return mComposedFolders;
     }
 }

@@ -7,38 +7,38 @@ import org.jetbrains.annotations.NotNull;
 
 public class SettingsManager {
 
-    private static final String KEY_SETTINGS = "KEY_FOLDING_FOLDERS";
+    private static final String KEY_SETTINGS = "KEY_COMPOSED_FOLDERS";
 
-    public static boolean isFoldingOn(@NotNull String folder) {
+    public static boolean isComposed(@NotNull String folder) {
         boolean isFoldingOn = false;
         Project currentProject = Utils.getCurrentProject();
         if (currentProject != null) {
             Settings settings = getSettings(currentProject);
-            isFoldingOn = settings.getFoldingFolders().contains(folder);
+            isFoldingOn = settings.getComposedFolders().contains(folder);
 
         }
 
         return isFoldingOn;
     }
 
-    public static void addFoldingFolder(@NotNull String folder) {
+    public static void addComposedFolder(@NotNull String folder) {
         Project currentProject = Utils.getCurrentProject();
         if (currentProject != null) {
             Gson gson = new Gson();
             Settings settings = getSettings(currentProject);
-            settings.getFoldingFolders().add(folder);
+            settings.getComposedFolders().add(folder);
 
             PropertiesComponent.getInstance(currentProject).setValue(KEY_SETTINGS, gson.toJson(settings));
         }
 
     }
 
-    public static void removeFoldingFolder(@NotNull String folder) {
+    public static void removeComposedFolder(@NotNull String folder) {
         Project currentProject = Utils.getCurrentProject();
         if (currentProject != null) {
             Gson gson = new Gson();
             Settings settings = getSettings(currentProject);
-            settings.getFoldingFolders().remove(folder);
+            settings.getComposedFolders().remove(folder);
 
             PropertiesComponent.getInstance(currentProject).setValue(KEY_SETTINGS, gson.toJson(settings));
         }

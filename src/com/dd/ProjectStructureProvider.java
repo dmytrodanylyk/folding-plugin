@@ -13,9 +13,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-public class FoldingStructureProvider implements com.intellij.ide.projectView.TreeStructureProvider {
+public class ProjectStructureProvider implements com.intellij.ide.projectView.TreeStructureProvider {
 
-    private static final char FOLDING_CHAR = '_';
+    private static final char COMPOSE_BY_CHAR = '_';
     private static final String OTHER_NODE = "other";
 
     @Nullable
@@ -31,8 +31,8 @@ public class FoldingStructureProvider implements com.intellij.ide.projectView.Tr
         if (parent.getValue() instanceof PsiDirectory) {
             PsiDirectory directory = (PsiDirectory) parent.getValue();
             String path = directory.getVirtualFile().getPath();
-            if (SettingsManager.isFoldingOn(path)) {
-                resultList.addAll(createFoldedFiles(children, viewSettings));
+            if (SettingsManager.isComposed(path)) {
+                resultList.addAll(createComposedFiles(children, viewSettings));
             } else {
                 resultList.addAll(children);
             }
@@ -44,38 +44,38 @@ public class FoldingStructureProvider implements com.intellij.ide.projectView.Tr
     }
 
     @NotNull
-    private List<AbstractTreeNode> createFoldedFiles(@NotNull Collection<AbstractTreeNode> fileNodes, ViewSettings viewSettings) {
+    private List<AbstractTreeNode> createComposedFiles(@NotNull Collection<AbstractTreeNode> fileNodes, ViewSettings viewSettings) {
         List<AbstractTreeNode> resultList = new ArrayList<>();
         Project project = Utils.getCurrentProject();
         if (project != null) {
-            HashSet<String> foldedDirNameSet = new HashSet<>();
-            List<AbstractTreeNode> notFoldedFileNodes = new ArrayList<>();
+            HashSet<String> composedDirNameSet = new HashSet<>();
+            List<AbstractTreeNode> notComposedFileNodes = new ArrayList<>();
 
             for (AbstractTreeNode fileNode : fileNodes) {
                 if (fileNode.getValue() instanceof PsiFile) {
                     PsiFile psiFile = (PsiFile) fileNode.getValue();
                     String fileName = psiFile.getName();
-                    int endIndex = fileName.indexOf(FOLDING_CHAR);
+                    int endIndex = fileName.indexOf(COMPOSE_BY_CHAR);
                     if (endIndex != -1) {
-                        String foldedDirName = fileName.substring(0, endIndex);
-                        foldedDirNameSet.add(foldedDirName);
+                        String composedDirName = fileName.substring(0, endIndex);
+                        composedDirNameSet.add(composedDirName);
                     } else {
-                        notFoldedFileNodes.add(fileNode);
+                        notComposedFileNodes.add(fileNode);
                     }
                 }
             }
 
-            for (String foldedDirName : foldedDirNameSet) {
-                FoldedDirectoryNode foldedDirNode = new FoldedDirectoryNode(project, viewSettings, foldedDirName);
-                List<AbstractTreeNode> foldedFileNodes = filterByDirName(fileNodes, foldedDirName);
-                foldedDirNode.getChildren().addAll(foldedFileNodes);
-                resultList.add(foldedDirNode);
+            for (String composedDirName : composedDirNameSet) {
+                DirectoryNode composedDirNode = new DirectoryNode(project, viewSettings, composedDirName);
+                List<AbstractTreeNode> composedFileNodes = filterByDirName(fileNodes, composedDirName);
+                composedDirNode.getChildren().addAll(composedFileNodes);
+                resultList.add(composedDirNode);
             }
 
-            if(!notFoldedFileNodes.isEmpty()) {
-                FoldedDirectoryNode foldedDirNode = new FoldedDirectoryNode(project, viewSettings, OTHER_NODE);
-                foldedDirNode.getChildren().addAll(notFoldedFileNodes);
-                resultList.add(foldedDirNode);
+            if(!notComposedFileNodes.isEmpty()) {
+                DirectoryNode composedDirNode = new DirectoryNode(project, viewSettings, OTHER_NODE);
+                composedDirNode.getChildren().addAll(notComposedFileNodes);
+                resultList.add(composedDirNode);
             }
         }
         return resultList;
@@ -88,10 +88,10 @@ public class FoldingStructureProvider implements com.intellij.ide.projectView.Tr
             if (fileNode.getValue() instanceof PsiFile) {
                 PsiFile psiFile = (PsiFile) fileNode.getValue();
                 String fileName = psiFile.getName();
-                int endIndex = fileName.indexOf(FOLDING_CHAR);
+                int endIndex = fileName.indexOf(COMPOSE_BY_CHAR);
                 if (endIndex != -1) {
-                    String foldedDirName = fileName.substring(0, endIndex);
-                    if(foldedDirName.equals(token)) {
+                    String composedDirName = fileName.substring(0, endIndex);
+                    if(composedDirName.equals(token)) {
                         resultList.add(fileNode);
                     }
                 }

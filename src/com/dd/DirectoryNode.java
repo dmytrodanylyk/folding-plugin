@@ -12,14 +12,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FoldedDirectoryNode extends ProjectViewNode<FoldedFile> {
-
+public class DirectoryNode extends ProjectViewNode<String> {
 
     private final String mName;
     private List<AbstractTreeNode> mChildNodeList;
 
-    protected FoldedDirectoryNode(Project project, ViewSettings viewSettings, String name) {
-        super(project, new FoldedFile(), viewSettings);
+    protected DirectoryNode(Project project, ViewSettings viewSettings, String name) {
+        super(project, name, viewSettings);
         mName = name;
         mChildNodeList = new ArrayList<>();
     }
