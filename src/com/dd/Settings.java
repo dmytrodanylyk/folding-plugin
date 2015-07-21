@@ -14,7 +14,7 @@ public class Settings {
     @NotNull
     public List<String> getComposedFolders() {
         if(mComposedFolders == null) {
-            mComposedFolders = new ArrayList<>();
+            mComposedFolders = new ArrayList<String>();
         }
 
         return mComposedFolders;

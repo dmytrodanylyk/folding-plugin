@@ -9,8 +9,8 @@ import com.intellij.psi.PsiDirectory;
 
 public class ComposeAction extends AnAction {
 
-    private static final String DECOMPOSE = "Decompose";
-    private static final String COMPOSE = "Compose";
+    private static final String DECOMPOSE = "Ungroup";
+    private static final String COMPOSE = "Group";
 
     @Override
     public void actionPerformed(AnActionEvent actionEvent) {

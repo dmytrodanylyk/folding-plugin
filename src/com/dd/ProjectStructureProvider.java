@@ -27,7 +27,7 @@ public class ProjectStructureProvider implements com.intellij.ide.projectView.Tr
     @NotNull
     @Override
     public Collection<AbstractTreeNode> modify(@NotNull AbstractTreeNode parent, @NotNull Collection<AbstractTreeNode> children, ViewSettings viewSettings) {
-        List<AbstractTreeNode> resultList = new ArrayList<>();
+        List<AbstractTreeNode> resultList = new ArrayList<AbstractTreeNode>();
         if (parent.getValue() instanceof PsiDirectory) {
             PsiDirectory directory = (PsiDirectory) parent.getValue();
             String path = directory.getVirtualFile().getPath();
@@ -45,11 +45,11 @@ public class ProjectStructureProvider implements com.intellij.ide.projectView.Tr
 
     @NotNull
     private List<AbstractTreeNode> createComposedFiles(@NotNull Collection<AbstractTreeNode> fileNodes, ViewSettings viewSettings) {
-        List<AbstractTreeNode> resultList = new ArrayList<>();
+        List<AbstractTreeNode> resultList = new ArrayList<AbstractTreeNode>();
         Project project = Utils.getCurrentProject();
         if (project != null) {
-            HashSet<String> composedDirNameSet = new HashSet<>();
-            List<AbstractTreeNode> notComposedFileNodes = new ArrayList<>();
+            HashSet<String> composedDirNameSet = new HashSet<String>();
+            List<AbstractTreeNode> notComposedFileNodes = new ArrayList<AbstractTreeNode>();
 
             for (AbstractTreeNode fileNode : fileNodes) {
                 if (fileNode.getValue() instanceof PsiFile) {
@@ -83,7 +83,7 @@ public class ProjectStructureProvider implements com.intellij.ide.projectView.Tr
 
     @NotNull
     private List<AbstractTreeNode> filterByDirName(Collection<AbstractTreeNode> fileNodes, String token) {
-        List<AbstractTreeNode> resultList = new ArrayList<>();
+        List<AbstractTreeNode> resultList = new ArrayList<AbstractTreeNode>();
         for (AbstractTreeNode fileNode : fileNodes) {
             if (fileNode.getValue() instanceof PsiFile) {
                 PsiFile psiFile = (PsiFile) fileNode.getValue();

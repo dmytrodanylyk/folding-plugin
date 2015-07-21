@@ -20,7 +20,7 @@ public class DirectoryNode extends ProjectViewNode<String> {
     protected DirectoryNode(Project project, ViewSettings viewSettings, String name) {
         super(project, name, viewSettings);
         mName = name;
-        mChildNodeList = new ArrayList<>();
+        mChildNodeList = new ArrayList<AbstractTreeNode>();
     }
 
     @Override
