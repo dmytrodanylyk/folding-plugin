@@ -4,7 +4,7 @@
 
 ### Description
 
-This plugin is very helpful in Android Development. It can display your files as a group of different folders only in project structure view.
+This plugin is very helpful in Android Development. It can display your files as a group of different folders in project structure view.
 
 **Note:**
 
@@ -45,5 +45,6 @@ res/
         home_fragment_sign_up.xml
 ```
 
-**Note** The Android project view defines its own structure and does not allow modifying the structure through any extensions.
+**Note:** The Android project view defines its own structure and does not allow modifying the structure through any extensions. Make sure your are in Project structure view, NOT Android.
 
+![](screenshots/Project.png)
