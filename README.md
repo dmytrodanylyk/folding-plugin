@@ -45,6 +45,20 @@ res/
         home_fragment_sign_up.xml
 ```
 
+## Installation & Usage
+
+Installation
+
+1. Download latest Android File Grouping zip file [here](https://github.com/dmytrodanylyk/folding-plugin/releases)
+2. Open AS `Settings`, and select `Plugins`
+3. Click `Install from disk` and choose `Android File Grouping.zip`
+4. Restart
+
+Usage
+
+1. Rick click on layout folder (or any other)
+2. In context menu click Group/Ungroup
+
 ## Limitations
 
 The Android project view defines its own structure and does not allow modifying the structure through any extensions. Make sure your are in Project structure view, NOT Android.
