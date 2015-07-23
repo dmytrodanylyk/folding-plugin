@@ -1,8 +1,8 @@
-### Android File Grouping v1.0
+## Android File Grouping v1.0
 
 ![](screenshots/Preview.png)
 
-### Description
+## Description
 
 This plugin is very helpful in Android Development. It can display your files as a group of different folders in project structure view.
 
@@ -45,14 +45,17 @@ res/
         home_fragment_sign_up.xml
 ```
 
-**Note:** The Android project view defines its own structure and does not allow modifying the structure through any extensions. Make sure your are in Project structure view, NOT Android.
+## Limitations
+
+The Android project view defines its own structure and does not allow modifying the structure through any extensions. Make sure your are in Project structure view, NOT Android.
 
 ![](screenshots/Project.PNG)
 
-Special thanks to [Beta Testers](screenshots/Beta_Testers.PNG).
+## Credits & License
 
-## License
+Special thanks to [beta testers](screenshots/Beta_Testers.PNG).
 
+```
 The MIT License (MIT)
 
 Copyright (c) 2015 Danylyk Dmytro
@@ -74,3 +77,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+```
