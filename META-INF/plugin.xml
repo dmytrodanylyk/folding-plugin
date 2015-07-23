@@ -1,12 +1,12 @@
 <idea-plugin version="2">
     <id>com.dmytrodanylyk.fold</id>
-    <name>File Group Plugin</name>
-    <version>1.0-pre-release</version>
+    <name>Android File Grouping</name>
+    <version>1.0</version>
     <vendor email="dmytrodanylyk@gmail.com" url="http://www.dmytrodanylyk.com/">Dmytro Danylyk</vendor>
 
     <description><![CDATA[
       This plugin is very helpful in Android Development.<br>
-      It can decompose your files to different folders only in project structure view.
+      It can display your files as a group of different folders only in project structure view.
       <b>Note:</b> files will not be physically moved to folders.<br>
       <br>
       Before decompose.<br>
