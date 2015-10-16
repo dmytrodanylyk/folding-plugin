@@ -1,6 +1,7 @@
 package com.dd;
 
 import com.intellij.ide.projectView.ViewSettings;
+import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
@@ -12,10 +13,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProjectStructureProvider implements com.intellij.ide.projectView.TreeStructureProvider {
 
-    private static final char COMPOSE_BY_CHAR = '_';
+    public static final char COMPOSE_BY_CHAR = '_';
     private static final String OTHER_NODE = "other";
 
     @Nullable
@@ -27,7 +30,7 @@ public class ProjectStructureProvider implements com.intellij.ide.projectView.Tr
     @NotNull
     @Override
     public Collection<AbstractTreeNode> modify(@NotNull AbstractTreeNode parent, @NotNull Collection<AbstractTreeNode> children, ViewSettings viewSettings) {
-        List<AbstractTreeNode> resultList = new ArrayList<AbstractTreeNode>();
+        List<AbstractTreeNode> resultList = new ArrayList<>();
         if (parent.getValue() instanceof PsiDirectory) {
             PsiDirectory directory = (PsiDirectory) parent.getValue();
             String path = directory.getVirtualFile().getPath();
@@ -45,22 +48,36 @@ public class ProjectStructureProvider implements com.intellij.ide.projectView.Tr
 
     @NotNull
     private List<AbstractTreeNode> createComposedFiles(@NotNull Collection<AbstractTreeNode> fileNodes, ViewSettings viewSettings) {
-        List<AbstractTreeNode> resultList = new ArrayList<AbstractTreeNode>();
+        List<AbstractTreeNode> resultList = new ArrayList<>();
         Project project = Utils.getCurrentProject();
         if (project != null) {
-            HashSet<String> composedDirNameSet = new HashSet<String>();
-            List<AbstractTreeNode> notComposedFileNodes = new ArrayList<AbstractTreeNode>();
+            HashSet<String> composedDirNameSet = new HashSet<>();
+            List<AbstractTreeNode> notComposedFileNodes = new ArrayList<>();
+
+            final boolean customPrefix = PropertiesComponent.getInstance().getBoolean(SettingConfigurable.PREFIX_CUSTOM_USE, false);
+
+            Pattern pattern = customPrefix ? Pattern.compile(PropertiesComponent.getInstance().getValue(SettingConfigurable.PREFIX_PATTERN, SettingConfigurable.DEFAULT_PATTERN)) : null;
 
             for (AbstractTreeNode fileNode : fileNodes) {
                 if (fileNode.getValue() instanceof PsiFile) {
                     PsiFile psiFile = (PsiFile) fileNode.getValue();
                     String fileName = psiFile.getName();
-                    int endIndex = fileName.indexOf(COMPOSE_BY_CHAR);
-                    if (endIndex != -1) {
-                        String composedDirName = fileName.substring(0, endIndex);
-                        composedDirNameSet.add(composedDirName);
+                    if (customPrefix) {
+                        Matcher m = pattern.matcher(fileName);
+                        if (m.find()) {
+                            String composedDirName = m.group(0);
+                            composedDirNameSet.add(composedDirName);
+                        } else {
+                            notComposedFileNodes.add(fileNode);
+                        }
                     } else {
-                        notComposedFileNodes.add(fileNode);
+                        int endIndex = fileName.indexOf(COMPOSE_BY_CHAR);
+                        if (endIndex != -1) {
+                            String composedDirName = fileName.substring(0, endIndex);
+                            composedDirNameSet.add(composedDirName);
+                        } else {
+                            notComposedFileNodes.add(fileNode);
+                        }
                     }
                 }
             }
@@ -68,13 +85,13 @@ public class ProjectStructureProvider implements com.intellij.ide.projectView.Tr
             for (String composedDirName : composedDirNameSet) {
                 DirectoryNode composedDirNode = new DirectoryNode(project, viewSettings, composedDirName);
                 List<AbstractTreeNode> composedFileNodes = filterByDirName(fileNodes, composedDirName);
-                composedDirNode.getChildren().addAll(composedFileNodes);
+                composedDirNode.addAllChildren(composedFileNodes);
                 resultList.add(composedDirNode);
             }
 
-            if(!notComposedFileNodes.isEmpty()) {
+            if (!notComposedFileNodes.isEmpty()) {
                 DirectoryNode composedDirNode = new DirectoryNode(project, viewSettings, OTHER_NODE);
-                composedDirNode.getChildren().addAll(notComposedFileNodes);
+                composedDirNode.addAllChildren(notComposedFileNodes);
                 resultList.add(composedDirNode);
             }
         }
@@ -83,16 +100,34 @@ public class ProjectStructureProvider implements com.intellij.ide.projectView.Tr
 
     @NotNull
     private List<AbstractTreeNode> filterByDirName(Collection<AbstractTreeNode> fileNodes, String token) {
-        List<AbstractTreeNode> resultList = new ArrayList<AbstractTreeNode>();
+        List<AbstractTreeNode> resultList = new ArrayList<>();
+
+        final boolean customPrefix = PropertiesComponent.getInstance().getBoolean(SettingConfigurable.PREFIX_CUSTOM_USE, false);
+
+        Pattern pattern = customPrefix ? Pattern.compile(PropertiesComponent.getInstance().getValue(SettingConfigurable.PREFIX_PATTERN, SettingConfigurable.DEFAULT_PATTERN)) : null;
+
         for (AbstractTreeNode fileNode : fileNodes) {
             if (fileNode.getValue() instanceof PsiFile) {
                 PsiFile psiFile = (PsiFile) fileNode.getValue();
                 String fileName = psiFile.getName();
-                int endIndex = fileName.indexOf(COMPOSE_BY_CHAR);
-                if (endIndex != -1) {
-                    String composedDirName = fileName.substring(0, endIndex);
-                    if(composedDirName.equals(token)) {
-                        resultList.add(fileNode);
+
+                if (customPrefix) {
+                    Matcher m = pattern.matcher(fileName);
+                    if (m.find()) {
+
+                        String composedDirName = m.group(0);
+                        if (composedDirName.equals(token)) {
+                            resultList.add(fileNode);
+                        }
+                    }
+                } else {
+
+                    int endIndex = fileName.indexOf(COMPOSE_BY_CHAR);
+                    if (endIndex != -1) {
+                        String composedDirName = fileName.substring(0, endIndex);
+                        if (composedDirName.equals(token)) {
+                            resultList.add(fileNode);
+                        }
                     }
                 }
             }
