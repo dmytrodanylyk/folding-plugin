@@ -96,9 +96,9 @@ public class SettingConfigurable implements Configurable {
 
     @Override
     public void apply() throws ConfigurationException {
-        PropertiesComponent.getInstance().setValue(PREFIX_CUSTOM_USE, useCustomPatternCheckBox.isSelected());
+        PropertiesComponent.getInstance().setValue(PREFIX_CUSTOM_USE, Boolean.valueOf(useCustomPatternCheckBox.isSelected()).toString());
         PropertiesComponent.getInstance().setValue(PREFIX_PATTERN, customPattern.getText());
-        PropertiesComponent.getInstance().setValue(PREFIX_HIDE, hideFoldingPrefix.isSelected());
+        PropertiesComponent.getInstance().setValue(PREFIX_HIDE, Boolean.valueOf(hideFoldingPrefix.isSelected()).toString());
 
         isModified = false;
     }
@@ -108,7 +108,7 @@ public class SettingConfigurable implements Configurable {
         final boolean customPrefix = PropertiesComponent.getInstance().getBoolean(PREFIX_CUSTOM_USE, false);
         useCustomPatternCheckBox.setSelected(customPrefix);
         customPattern.setEnabled(customPrefix);
-        customPattern.setText(PropertiesComponent.getInstance().getValue(PREFIX_PATTERN));
+        customPattern.setText(PropertiesComponent.getInstance().getValue(PREFIX_PATTERN, DEFAULT_PATTERN_DOUBLE));
         hideFoldingPrefix.getModel().setSelected(PropertiesComponent.getInstance().getBoolean(PREFIX_HIDE, false));
     }
 
