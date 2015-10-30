@@ -1,4 +1,4 @@
-## Android File Grouping Plugin v1.0
+## Android File Grouping Plugin v1.1
 
 ![](screenshots/Preview.png)
 
