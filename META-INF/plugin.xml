@@ -74,6 +74,11 @@
         <!-- Add your project components here -->
     </project-components>
 
+    <extensions defaultExtensionNs="com.intellij">
+        <errorHandler implementation="com.intellij.diagnostic.ITNReporter"/>
+        <applicationConfigurable instance="com.dd.SettingConfigurable"/>
+    </extensions>
+
     <actions>
         <!-- Add your actions here -->
         <action id="ComposeAction" class="com.dd.ComposeAction">
