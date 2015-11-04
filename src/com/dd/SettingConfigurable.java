@@ -1,8 +1,10 @@
 package com.dd;
 
+import com.intellij.ide.projectView.ProjectView;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ *
  * Created by skyrylyuk on 10/15/15.
  */
 public class SettingConfigurable implements Configurable {
@@ -99,6 +102,14 @@ public class SettingConfigurable implements Configurable {
         PropertiesComponent.getInstance().setValue(PREFIX_CUSTOM_USE, Boolean.valueOf(useCustomPatternCheckBox.isSelected()).toString());
         PropertiesComponent.getInstance().setValue(PREFIX_PATTERN, customPattern.getText());
         PropertiesComponent.getInstance().setValue(PREFIX_HIDE, Boolean.valueOf(hideFoldingPrefix.isSelected()).toString());
+
+        if (isModified) {
+            Project currentProject = Utils.getCurrentProject();
+
+            if (currentProject != null) {
+                ProjectView.getInstance(currentProject).refresh();
+            }
+        }
 
         isModified = false;
     }
