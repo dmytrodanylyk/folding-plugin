@@ -15,13 +15,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirectoryNode extends ProjectViewNode<String> {
+public class DirectoryNode extends ProjectViewNode<PsiFile> {
 
     private final String mName;
     private List<AbstractTreeNode> mChildNodeList;
 
-    protected DirectoryNode(Project project, ViewSettings viewSettings, String name) {
-        super(project, name, viewSettings);
+    protected DirectoryNode(Project project, ViewSettings viewSettings, PsiFile directory, String name) {
+        super(project, directory, viewSettings);
         mName = name;
         mChildNodeList = new ArrayList<AbstractTreeNode>();
     }
