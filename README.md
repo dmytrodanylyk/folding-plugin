@@ -59,6 +59,21 @@ Usage
 1. Rick click on layout folder (or any other)
 2. In context menu click Group/Ungroup
 
+Settings
+
+Plugin setting can be found by path 'Settings'('Preferences' on Mac Os) -> 'Other Settings' -> 'Folding Plugin'  
+
+![](screenshots/Settings.png)
+
+By default, grouping happens by part of filename which situated before first symbol underscore(_). Also, this part 
+of filename is not hide. Patter for grouping setup as regular expression and can be change 'Setting' -> 'Other Setting' 
+-> 'Android Folding' -> 'Use custom pattern'. 'Hide Folding Prefix' take potability hide part of filename with 
+complete with pattern.
+
+| Default       | Folding default  | Folding with hide prefix |
+| ------------- |:----------------:| :-----------------------:|
+| ![](screenshots/Project_Tree_Default.png) | ![](screenshots/Project_Tree_Folding.png) | ![](screenshots/Project_Tree_Hide_Prefix.png) |
+
 ## Limitations
 
 The Android project view defines its own structure and does not allow modifying the structure through any extensions. Make sure your are in Project structure view, NOT Android.

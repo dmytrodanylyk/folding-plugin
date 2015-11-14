@@ -83,14 +83,16 @@ public class ProjectStructureProvider implements com.intellij.ide.projectView.Tr
             }
 
             for (String composedDirName : composedDirNameSet) {
-                DirectoryNode composedDirNode = new DirectoryNode(project, viewSettings, composedDirName);
                 List<AbstractTreeNode> composedFileNodes = filterByDirName(fileNodes, composedDirName);
+                PsiFile psiFile = (PsiFile) composedFileNodes.get(0).getValue();
+                DirectoryNode composedDirNode = new DirectoryNode(project, viewSettings, psiFile, composedDirName);
                 composedDirNode.addAllChildren(composedFileNodes);
                 resultList.add(composedDirNode);
             }
 
             if (!notComposedFileNodes.isEmpty()) {
-                DirectoryNode composedDirNode = new DirectoryNode(project, viewSettings, OTHER_NODE);
+                PsiFile psiFile = (PsiFile) notComposedFileNodes.get(0).getValue();
+                DirectoryNode composedDirNode = new DirectoryNode(project, viewSettings, psiFile, OTHER_NODE);
                 composedDirNode.addAllChildren(notComposedFileNodes);
                 resultList.add(composedDirNode);
             }
